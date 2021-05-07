@@ -1,0 +1,462 @@
+<deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
+  <configuration build-checksum="2203903476" file="C:\work\matlab\projects\EPRsim app\EPRSimulator.prj" location="C:\work\matlab\projects\EPRsim app" name="EPRSimulator" preferred-package-location="C:\work\matlab\projects\EPRsim app\EPRSimulator\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>EPRSimulator</param.appname>
+    <param.icon>${PROJECT_ROOT}\EPRSimulator_resources\icon.ico</param.icon>
+    <param.icons>
+      <file>${PROJECT_ROOT}\EPRSimulator_resources\icon_48.png</file>
+      <file>${PROJECT_ROOT}\EPRSimulator_resources\icon_32.png</file>
+      <file>${PROJECT_ROOT}\EPRSimulator_resources\icon_24.png</file>
+      <file>${PROJECT_ROOT}\EPRSimulator_resources\icon_16.png</file>
+    </param.icons>
+    <param.version>3.0</param.version>
+    <param.authnamewatermark>Leonid Rapatskiy</param.authnamewatermark>
+    <param.email>leonid.rapatskiy@gmail.com</param.email>
+    <param.company />
+    <param.summary>Educational EPR spectra simulation program based on EasySpin routines</param.summary>
+    <param.description>This program displays energy level diagram and EPR spectrum of a given spin system. The spin system parameters are named according to EasySpin standards. The program is using pepper routine (solid state / frozen solution EPR) for spectral calculations.</param.description>
+    <param.screenshot>C:\work\matlab\projects\EPRSIM\eprsimlogo_medium2.png</param.screenshot>
+    <param.guid />
+    <param.installpath.string>\EPRSimulator\</param.installpath.string>
+    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.logo />
+    <param.install.notes />
+    <param.target.install.notes />
+    <param.intermediate>${PROJECT_ROOT}\EPRSimulator\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\EPRSimulator\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\EPRSimulator\for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}\EPRSimulator</param.logdir>
+    <param.enable.clean.build>false</param.enable.clean.build>
+    <param.user.defined.mcr.options />
+    <param.target.type>subtarget.standalone</param.target.type>
+    <param.support.packages />
+    <param.web.mcr>true</param.web.mcr>
+    <param.package.mcr>false</param.package.mcr>
+    <param.no.mcr>false</param.no.mcr>
+    <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
+    <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
+    <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
+    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.create.log>true</param.create.log>
+    <param.log.file>log.txt</param.log.file>
+    <param.native.matlab>false</param.native.matlab>
+    <param.checkbox>false</param.checkbox>
+    <param.example />
+    <param.help.text>Syntax 
+	  -? 
+	 
+ Input Arguments 
+	 -?  print help on how to use the application 
+	 input arguments</param.help.text>
+    <unset>
+      <param.company />
+      <param.guid />
+      <param.installpath.string />
+      <param.installpath.combo />
+      <param.logo />
+      <param.install.notes />
+      <param.target.install.notes />
+      <param.intermediate />
+      <param.files.only />
+      <param.output />
+      <param.logdir />
+      <param.enable.clean.build />
+      <param.user.defined.mcr.options />
+      <param.target.type />
+      <param.support.packages />
+      <param.web.mcr />
+      <param.package.mcr />
+      <param.no.mcr />
+      <param.web.mcr.name />
+      <param.package.mcr.name />
+      <param.no.mcr.name />
+      <param.windows.command.prompt />
+      <param.native.matlab />
+      <param.checkbox />
+      <param.example />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\eprsimulator.mlapp</file>
+    </fileset.main>
+    <fileset.resources>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\addnoise.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\amu.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\ang2vec.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\angstrom.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\apowin.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\avogadro.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\barn.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\basecorr.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\blochsteady.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\bmagn.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\bohrrad.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\boltzm.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\cardamom.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\cgmatrix.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\chili.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\clebschgordan.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\clight.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\commute.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\Contents.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\convspec.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\crystalfield.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\ctafft.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\curry.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\datasmooth.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\degree.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\deriv.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\diptensor.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\easyspin.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\easyspincompile.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\easyspininfo.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\easyspinupdate.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\easyspinversioncheck.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\echarge.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\eeint.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\eigfields.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\emass.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\endorfrq.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\endorfrq_perturb.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\eprconvert.fig</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\eprconvert.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\eprload.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\eprsave.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\eps0.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\equivcouple.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\equivsplit.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\erot.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\eschecker.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\esfit.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\esfit_genetic.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\esfit_grid.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\esfit_levmar.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\esfit_montecarlo.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\esfit_simplex.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\esfit_swarm.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\eulang.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\euler2quat.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\evolt.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\evolve.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\ewrls.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\exciteprofile.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\exponfit.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\faraday.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\fastmotion.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\fdaxis.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\fieldmod.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\garlic.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\gaussian.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\gfree.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\hartree.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\hbar.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\hfine.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\hilberttrans.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\hsdim.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\info.xml</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\isotopes.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\isotopologues.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\isto.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\isto2stev.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\larmorfrq.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\levels.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\levelsplot.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\lorentzian.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\lpsvd.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\lshape.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\makespec.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\mdhmm.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\mdload.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\mhz2mt.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\mlpsvd.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\molgas.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\mt2mhz.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\mu0.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nmagn.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nmass.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nnint.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nquad.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nucabund.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nucdata.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nucfrq2d.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nucgval.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nucqmom.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nucspin.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nucspinadd.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nucspinkeep.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\nucspinrmv.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\orca2easyspin.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\oripotentialplot.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\orisel.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\pepper.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\planck.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\plegendre.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\pmass.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\adddefaults.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\allclose.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\allcombinations.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\anisosubsys.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\autocorrfft.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\cardamom_estimatedifftensor.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\cardamom_propagatedm.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\cardamom_rejectionsample3d.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\cardamom_sobol_generate.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\cardamom_tensortraj.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_basisbuild.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_conjgrad.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_contfracspec.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_eqpopvec.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_lanczos.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_lm.c</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_lm.mexa64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_lm.mexmaci64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_lm.mexw64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_lm0.inc</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_lm1.inc</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_lm2.inc</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_startingvector.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chili_xlmk.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\chkmlver.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\crosscorrfft.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\cubicsolve.c</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\cubicsolve.mexa64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\cubicsolve.mexmaci64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\cubicsolve.mexw64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\diffsuperop.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\diffsuperop_LMK.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\elapsedtime.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\elementno2symbol.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\elementsymbol2no.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_ActiveSpectrum.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_AdaniDAT.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_AdaniJSON.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_BrukerBES3T.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_BrukerESP.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_d00WISETH.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_jeol.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_MagnettechBinary.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_MagnettechXML.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_MAGRES.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_qeseETH.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_specman.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eprload_VarianE9ETH.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\esguimain.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\esspline1d.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\esspline2d.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\expm_.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\eyekron.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\faddeeva.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\foldoridist.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\FourierSeriesCoefficients.txt</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\GaussianCascadeCoefficients.txt</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\generateoribasis.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\getdstrainops.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\gethamdata.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\gethamdata_hO.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\getmatrix.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\gridinterp.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\gridparam.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\hil2liouv.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\histcountsn.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\isotopedata.txt</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\istotensor.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\jjj.h</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\jjjsymbol.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\kroneye.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\ksymmetrizer.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\letter2vec.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\liouvhamiltonian.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\liouvhamiltonian_LMK.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\lisum1i.c</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\lisum1i.mexa64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\lisum1i.mexmaci64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\lisum1i.mexw64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\logmsg.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\magint.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\md_readdcd.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\md_readgro.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\md_readpsf.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\md_readtrr.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\md_savedcd.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\mdhmm_em.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\mdhmm_kmeans.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\mdhmm_lbfgsb.inc</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\mdhmm_lbfgsb.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\mdhmm_lbfgsb_wrapper.c</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\mdhmm_lbfgsb_wrapper.mexa64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\mdhmm_lbfgsb_wrapper.mexmaci64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\mdhmm_lbfgsb_wrapper.mexw64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\multimatmult.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\multimatmult_.c</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\multimatmult_.mexa64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\multimatmult_.mexmaci64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\multimatmult_.mexw64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\multinucstick.c</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\multinucstick.mexa64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\multinucstick.mexmaci64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\multinucstick.mexw64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\ndkron.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\nuclist2string.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\nucstring2list.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\p_crystalorientations.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\p_excitationgeometry.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\p_symandgrid.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\parsefieldparams.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\parseoption.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\polyfitvec.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\pqorder.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projecttriangles.c</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projecttriangles.mexa64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projecttriangles.mexmaci64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projecttriangles.mexw64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projecttriangles.mexw64-d51be0e2</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projectzones.c</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projectzones.mexa64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projectzones.mexmaci64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projectzones.mexw64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\projectzones.mexw64-3f350dae</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\rbos.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\s_plotting.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\s_predefinedexperiments.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\s_propagationsetup.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\s_relaxationsuperoperator.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\s_reorder_events.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\s_sequencer.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\s_thyme.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\sf_pathways.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\sf_peaks.c</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\sf_peaks.mexa64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\sf_peaks.mexmaci64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\sf_peaks.mexw64</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\sitetransforms.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\spacegroups.txt</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\stochtraj_calcanistorque.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\stochtraj_grstat.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\stochtraj_proprottraj.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\stochtraj_wignerdquat.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\validate_dynord.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\validate_exp.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\validatespinsys.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\wrappedgaussian.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\private\xml2struct.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\propint.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\pulse.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\quat2euler.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\quat2rotmat.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\quatinv.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\quatmult.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\quatvecmult.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rapidscan2spc.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rcfilt.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rescaledata.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\resfields.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\resfields_perturb.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\resfreqs_matrix.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\resfreqs_perturb.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\resonator.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\resonatorconv.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\resonatorfunc.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rfmixer.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rotateframe.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rotaxi2mat.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rotmat2axi.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rotmat2quat.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rotplane.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rotview.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\runprivate.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\rydberg.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\saffron.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\salt.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\sham.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\sigeq.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\signalprocessing.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\soint.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\sop.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\spherharm.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\sphgrid.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\sphrand.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\spidyan.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\spinladder.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\spinvec.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\stackplot.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\stev.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\stochtraj_diffusion.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\stochtraj_jump.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\symm.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\tensor_cart2sph.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\tensor_sph2cart.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\transmitter.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\vec2ang.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\voigtian.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\wigner3j.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\wigner6j.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\wignerd.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\zeeman.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\zeemanho.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\zfield.m</file>
+      <file>C:\work\matlab\projects\EPRSIM\easyspin\zfsframes.m</file>
+    </fileset.resources>
+    <fileset.package />
+    <fileset.depfun />
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}\EPRSimulator\for_testing" name="EPRSimulator.exe" optional="false">C:\work\matlab\projects\EPRsim app\EPRSimulator\for_testing\EPRSimulator.exe</file>
+      <file location="${PROJECT_ROOT}\EPRSimulator\for_testing" name="splash.png" optional="false">C:\work\matlab\projects\EPRsim app\EPRSimulator\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\EPRSimulator\for_testing" name="readme.txt" optional="true">C:\work\matlab\projects\EPRsim app\EPRSimulator\for_testing\readme.txt</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2019b</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="neuralnetwork" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
