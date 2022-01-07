@@ -18,3 +18,7 @@ An educational app for the EPR spectral simulations. The purpose of this app is 
 * Loading of 1-dimentional EPR spectra (pulse and CW, but only .DSC files) is supported
 
 * Saving parameters as a matlab structure is supported
+
+## Requirements:
+
+* MatLab Runtime libraries version R2018b (9.5)
