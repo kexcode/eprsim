@@ -1,5 +1,5 @@
 # eprsim
-EPR Simulator App v.3.0.1
+EPR Simulator App v.3.3
 
 ## Description:
 
@@ -21,4 +21,4 @@ An educational app for the EPR spectral simulations. The purpose of this app is 
 
 ## Requirements:
 
-* MatLab Runtime libraries version R2018b (9.5)
+* MatLab Runtime libraries version R2023b (23.2)
