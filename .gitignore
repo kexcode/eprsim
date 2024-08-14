@@ -2,10 +2,10 @@
 eprsimulator.mlapp
 
 # general
-.gitignore
 test.m
 test2.m
-documents/EPR_Simulator_v3.3_guide_EN.docx
+*/*.docx
+*.prj
 
 # Windows default autosave extension
 *.asv
