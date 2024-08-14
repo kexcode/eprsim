@@ -4,6 +4,7 @@ eprsimulator.mlapp
 # general
 test.m
 test2.m
+documents/EPR_Simulator_v3.3_guide_EN.docx
 
 # Windows default autosave extension
 *.asv
