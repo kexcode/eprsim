@@ -9,8 +9,6 @@
 
 function A = angstrom
 
-% 1 Angstrom = 10^-10 m (exact)
+A = 1e-10; % exact
 
-A = 1e-10;
-
-return
+end
