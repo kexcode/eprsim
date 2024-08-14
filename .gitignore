@@ -4,8 +4,10 @@ eprsimulator.mlapp
 # general
 test.m
 test2.m
+*_resources/*
 */*.docx
 *.prj
+*.svg
 
 # Windows default autosave extension
 *.asv
