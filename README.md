@@ -7,13 +7,15 @@ An educational app for the EPR spectral simulations. The purpose of this app is 
 
 ## Features:
 
-* EPR spectra calculation are using [**pepper**](https://easyspin.org/easyspin/documentation/pepper.html) (solid state EPR).
+* EPR spectra calculation employs:
+  *  [**pepper**](https://easyspin.org/easyspin/documentation/userguide_pepper.html) for a solid state EPR
+  *  [**garlic**](https://easyspin.org/easyspin/documentation/userguide_garlic.html) for a liquid state EPR
 
-* Orientation selection via specifying the [Euler angles](https://easyspin.org/easyspin/documentation/eulerangles.html) for single crystal orientation
+* Orientation selection via specifying the [SampleFrame](https://easyspin.org/easyspin/documentation/frames.html) relative to the lab frame, the molecular frame is considered to be collinear with the sample frame for a simplicity.
 
-* Energy level diagram is plotted only for selected orientation
+* Energy level diagram is plotted only for selected orientation and supports all possible spin system parameters
 
-* The input values have to be in the correct format
+* User friendly input format: easy to work with multiple nuclei systems, including equivalent nuclei. The parcing process to a suitable spin system is implemented.
 
 * Loading of 1-dimentional EPR spectra (pulse and CW, but only .DSC files) is supported
 
