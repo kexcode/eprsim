@@ -14,6 +14,19 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
         GridLayoutMain                matlab.ui.container.GridLayout
         LeftPanel                     matlab.ui.container.Panel
         GridLayoutLeftPanel           matlab.ui.container.GridLayout
+        GridLayout16                  matlab.ui.container.GridLayout
+        FieldtogfactorConverterPanel  matlab.ui.container.Panel
+        GridLayout14_2                matlab.ui.container.GridLayout
+        mTLabel                       matlab.ui.control.Label
+        gfactorButton                 matlab.ui.control.Button
+        FieldButton                   matlab.ui.control.Button
+        gfactorEditField              matlab.ui.control.NumericEditField
+        gfactorEditFieldLabel         matlab.ui.control.Label
+        FieldEditField                matlab.ui.control.NumericEditField
+        EditFieldLabel                matlab.ui.control.Label
+        SamplePhysicalStatePanel      matlab.ui.container.Panel
+        GridLayout14                  matlab.ui.container.GridLayout
+        SamplePhysicalStateDropDown   matlab.ui.control.DropDown
         GridLayout7                   matlab.ui.container.GridLayout
         FrequencyBandPanel            matlab.ui.container.Panel
         GridLayout8                   matlab.ui.container.GridLayout
@@ -24,9 +37,6 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
         MessagePanel                  matlab.ui.container.Panel
         GridLayout15                  matlab.ui.container.GridLayout
         MessageField                  matlab.ui.control.EditField
-        SamplePhysicalStatePanel      matlab.ui.container.Panel
-        GridLayout14                  matlab.ui.container.GridLayout
-        SamplePhysicalStateDropDown   matlab.ui.control.DropDown
         ControlPanel                  matlab.ui.container.Panel
         GridLayout10                  matlab.ui.container.GridLayout
         GridLayout13                  matlab.ui.container.GridLayout
@@ -266,7 +276,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                 Elev = levels(ELD_Sys, Ori, B);
                 [Pos, ampl, ~, trans] = resfields(ELD_Sys, Param);
             catch ME
-                app.MessageField.Value = ME.message;
+                app.MessageField.Value = ['>> ' ME.message];
                 cla(app.UIAxesLevels);
                 % app.StartButton.Value = false;
                 % app.StartButton.Text = "Start";
@@ -281,10 +291,10 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             if (strcmp(app.OverlayresultsSwitch.Value,'On'))
                 hold(app.UIAxesLevels, 'on');
                 app.ColorScheme.CurrentColorIndex = mod(app.ColorScheme.CurrentColorIndex + 1, 10) + 1; % numbers in range [1, 10]
-                trcolor = app.ColorScheme.Map(app.ColorScheme.CurrentColorIndex, :);
+                app.ColorScheme.TransitionColor = app.ColorScheme.Map(app.ColorScheme.CurrentColorIndex, :);
             else
                 hold(app.UIAxesLevels, 'off');
-                trcolor='r';
+                app.ColorScheme.TransitionColor='r';
             end
             
             % plot Energy Levels vs field
@@ -311,7 +321,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     
                     % plot only allowed transitions                        
                     if (ampl(k) > amplitudeTreshold)
-                        plot(app.UIAxesLevels, xx, yy,'Color', trcolor)
+                        plot(app.UIAxesLevels, xx, yy,'Color', app.ColorScheme.TransitionColor)
                     end
                 end
 %                     rfield
@@ -334,8 +344,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             switch state_value
                 case 'solid' 
                     if isfield(app.Sys, 'n')
-                        app.MessageField.FontColor = 'red';
-                        app.MessageField.Value = 'Error: equivalent nuclei are not supported in pepper';
+                        app.MessageField.FontColor = 'r';
+                        app.MessageField.Value = '>> Error: equivalent nuclei are not supported in pepper';
                         cla(app.UIAxesCW);
                         cla(app.UIAxesAbsorption);
                         app.StartButton.Value = false;
@@ -346,7 +356,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                         [x, spec] = pepper(app.Sys, app.Exp, app.Opt);
                     catch ME
                         if (~isempty(ME.message))
-                            app.MessageField.Value = ME.message;
+                            app.MessageField.Value = ['>> ' ME.message];
                             app.StartButton.Value = false;
                             app.StartButton.Text = 'Start';
                             return;
@@ -364,7 +374,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                             % if (contains(ME.message, 'equivalent nuclei'))
                             %     [x, spec] = garlic(ELD_Sys, app.Exp, app.Opt);
                             % end
-                            app.MessageField.Value = ME.message;
+                            app.MessageField.Value = ['>> ' ME.message];
                             app.StartButton.Value = false;
                             app.StartButton.Text = 'Start';
                             return;
@@ -373,7 +383,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     spec = spec/max(spec);
                 
                 otherwise
-                    app.MessageField.Value = ME.message;
+                    app.MessageField.Value = ['>> ' ME.message];
                     app.StartButton.Value = false;
                     app.StartButton.Text = 'Start';
                     return;
@@ -382,7 +392,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             % check if need to overlap spectra
             if (strcmp(app.OverlayresultsSwitch.Value,'On'))
                 hold(app.UIAxesAbsorption, 'on');
-                plot(app.UIAxesAbsorption, x, spec, 'Color', trcolor);
+                plot(app.UIAxesAbsorption, x, spec, 'Color', app.ColorScheme.TransitionColor);
             else
                 hold(app.UIAxesAbsorption, 'off');
                 plot(app.UIAxesAbsorption, x, spec, 'r');
@@ -414,7 +424,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                         [x, spec] = pepper(app.Sys, app.Exp, app.Opt);
                     catch ME
                         if (~isempty(ME.message))
-                            app.MessageField.Value = ME.message;
+                            app.MessageField.Value = ['>> ' ME.message];
                             app.StartButton.Value = false;
                             app.StartButton.Text = 'Start';
                             return;
@@ -422,12 +432,11 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     end
 
                 case 'liquid'
-                    app.Opt.Method = 'exact';
                     try
                         [x, spec] = garlic(app.Sys, app.Exp, app.Opt);
                     catch ME
                         if (~isempty(ME.message))
-                            app.MessageField.Value = ME.message;
+                            app.MessageField.Value = ['>> ' ME.message];
                             app.StartButton.Value = false;
                             app.StartButton.Text = 'Start';
                             return;
@@ -445,7 +454,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             % check if need to overlap spectra
             if (strcmp(app.OverlayresultsSwitch.Value,'On'))
                 hold(app.UIAxesCW, 'on');
-                plot(app.UIAxesCW, x, spec, 'Color', trcolor);
+                plot(app.UIAxesCW, x, spec, 'Color', app.ColorScheme.TransitionColor);
             else
                 hold(app.UIAxesCW, 'off');
                 plot(app.UIAxesCW, x, spec, 'r');
@@ -456,15 +465,11 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                    
             % if data exists - add to the plot
             if (isfield(app.Data,'file'))
-                if (isfield(app.Data.par, 'EXPT'))
-                    if (~strcmp(app.Data.par.EXPT,'PLS'))
-                        hold(app.UIAxesCW, 'on');
-                        plot(app.UIAxesCW, app.Data.x, app.Data.spec,'k');
-                    end
-                else
+                if (isfield(app.Data.par, 'EXPT') && strcmp(app.Data.par.EXPT,'CW'))
                     hold(app.UIAxesCW, 'on');
                     plot(app.UIAxesCW, app.Data.x, app.Data.spec,'k');
                 end
+                ylim(app.UIAxesCW, [min(min(spec),min(app.Data.spec)) max(max(spec),max(app.Data.spec))]*1.2);
             end
             
             app.MessageField.Value = ">> Done!";
@@ -491,7 +496,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                 try
                     ELD_spin_system = rmfield(ELD_spin_system,'Q');
                 catch ME
-                    app.MessageField.Value = ME.message;
+                    app.MessageField.Value = ['>> ' ME.message];
                 end
                     
                 listNucs = split(app.Sys.Nucs,',');
@@ -601,7 +606,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             % select file and load EPR data
             warning('off'); 
             try
-                [app.Data.file, app.Data.path] = uigetfile('*.dsc');
+                [app.Data.file, app.Data.path] = uigetfile('*.*');
                 [app.Data.x, app.Data.spec, app.Data.par] = eprload(strcat(app.Data.path,app.Data.file)); % loading selected data file | only .dsc are supported for now
                 app.MessageField.FontColor = 'k';            
                 app.MessageField.Value = "Loading...";
@@ -617,8 +622,11 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.Data.axh = app.UIAxesCW;         % axes handle << CW spectrum
                 end
                 
+                % unit conversion and baseline correction
                 app.Data.x = app.Data.x/10; % converting G into mT
+                app.Data.spec = basecorr(app.Data.spec, 1, 1);
                 app.Data.spec = app.Data.spec/max(app.Data.spec); % scaling ordinate to maxval == 1
+                
                 if (isfield(app.Data.par, 'MWFQ'))
                     % change band selector depending on mwFreq
                     freq = app.Data.par.MWFQ/1e9;
@@ -644,28 +652,29 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                         if (isreal(app.Data.spec)) % check if not complex
                             plot(app.Data.axh, app.Data.x, app.Data.spec,'k')
                         else
-                            plot(app.Data.axh, app.Data.x, real(app.Data.spec),'k',app.Data.x, imag(app.Data.spec),'m')
+                            plot(app.Data.axh, app.Data.x, real(app.Data.spec),'k',app.Data.x, imag(app.Data.spec),'-k')
                         end
 
                         % plot formatting
-                        app.UIAxesAbsorption.XLim = app.Data.par.Range;
-                        app.UIAxesAbsorption.YLim = [-0.1 1.2];
+                        
+                        app.UIAxesAbsorption.YLim = [-0.05 1.1];
+                    else % otherwise / not pulse
+                        plot(app.UIAxesCW, app.Data.x, app.Data.spec,'k')
+                        app.UIAxesCW.YLim = 1.2 * [min(real(app.Data.spec)) max(real(app.Data.spec))];
                     end
-                else % otherwise / not pulse
-                    plot(app.UIAxesCW, app.Data.x, app.Data.spec,'k')
-                    app.UIAxesCW.YLim = 1.2 * [min(real(app.Data.spec)) max(real(app.Data.spec))];
                 end
+                app.UIAxesAbsorption.XLim = app.Data.par.Range;
                 app.UIAxesCW.XLim = app.Data.par.Range;
-                app.UIAxesCW.YLim = 1.2 * [-1 1];
+                % app.UIAxesCW.YLim = 1.2 * [-1 1];
 %                 app.UIAxesCW.YLim = 1.2 * [min(real(app.Data.spec)) max(real(app.Data.spec))];
                 app.UIAxesLevels.XLim = app.Data.par.Range;
                 
                 % lamp on
                 app.DataisloadedLamp.Color = 'g';
                 % status message
-                app.MessageField.Value = "Loading completed";
+                app.MessageField.Value = ">> Loading completed";
             catch ME
-                app.MessageField.Value = ME.message;
+                app.MessageField.Value = ['>> ' ME.message];
             end
             app.EPRSimulatorUIFigure.Visible = 'off';
             app.EPRSimulatorUIFigure.Visible = 'on';
@@ -780,7 +789,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                 % validating fieldStep
                 fieldStep = (app.Exp.Range(2) - app.Exp.Range(1)) / (app.Exp.nPoints - 1);
                 if(fieldStep > app.Sys.lw / 3)
-                    app.MessageField.Value = "Error: not enough points to resolve the resonance line";
+                    app.MessageField.Value = ">> Error: not enough points to resolve the resonance line";
+                    app.MessageField.FontColor = 'r';
                     app.StartButton.Value = false;
                     app.StartButton.Text = "Start";
                     return;
@@ -823,7 +833,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'exact'; 
                     app.OptGridSizeEditField.Value = 23;
-                    app.MessageField.Value = 'Free electron example selected';
+                    app.MessageField.Value = '>> Free electron example selected';
                 case '1 Proton'
                     app.SamplePhysicalStateDropDown.Value = 'liquid';
                     app.SysSEditField.Value = '1/2';
@@ -847,7 +857,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'perturb2'; 
                     app.OptGridSizeEditField.Value = 23;
-                    app.MessageField.Value = '1 Proton example selected';
+                    app.MessageField.Value = '>> 1 Proton example selected';
                     
                 case '2 Protons'
                     app.SamplePhysicalStateDropDown.Value = 'liquid';
@@ -872,7 +882,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'exact'; 
                     app.OptGridSizeEditField.Value = 23;
-                    app.MessageField.Value = '2 Protons example selected';
+                    app.MessageField.Value = '>> 2 Protons example selected';
                 case 'Nitroxide radical'
                     app.SamplePhysicalStateDropDown.Value = 'solid';
                     app.SysSEditField.Value = '1/2';
@@ -896,7 +906,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'perturb2'; 
                     app.OptGridSizeEditField.Value = 23;
-                    app.MessageField.Value = 'Nitroxide radical example selected';
+                    app.MessageField.Value = '>> Nitroxide radical example selected';
                 case 'Methyl radical'
                     app.SamplePhysicalStateDropDown.Value = 'liquid';
                     app.SysSEditField.Value = '1/2';
@@ -916,7 +926,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'perturb2'; 
                     app.OptGridSizeEditField.Value = 23;
-                    app.MessageField.Value = 'Methyl radical example selected';
+                    app.MessageField.Value = '>> Methyl radical example selected';
                 case 'Spin triplet'
                     app.SamplePhysicalStateDropDown.Value = 'solid';
                     app.SysSEditField.Value = '1';
@@ -936,7 +946,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'matrix'; 
                     app.OptGridSizeEditField.Value = 23;
-                    app.MessageField.Value = 'Spin triplet example selected';
+                    app.MessageField.Value = '>> Spin triplet example selected';
                 case 'Triplet nitrene'
                     app.SamplePhysicalStateDropDown.Value = 'solid';
                     app.SysSEditField.Value = '1';
@@ -956,7 +966,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'matrix'; 
                     app.OptGridSizeEditField.Value = 17;
-                    app.MessageField.Value = 'Triplet nitrene example selected';
+                    app.MessageField.Value = '>> Triplet nitrene example selected';
                 case 'Triplet carbene'
                     app.SamplePhysicalStateDropDown.Value = 'solid';
                     app.SysSEditField.Value = '1';
@@ -976,7 +986,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'matrix'; 
                     app.OptGridSizeEditField.Value = 17;
-                    app.MessageField.Value = 'Triplet carbene example selected';  
+                    app.MessageField.Value = '>> Triplet carbene example selected';  
                 case 'Mn(III) ion'
                     app.SamplePhysicalStateDropDown.Value = 'solid';
                     app.SysSEditField.Value = '2';
@@ -999,8 +1009,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpTemperatureEditField.Value = '5';
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'matrix'; 
-                    app.OptGridSizeEditField.Value = 23;
-                    app.MessageField.Value = 'Mn(III) ion example selected';
+                    app.OptGridSizeEditField.Value = 201;
+                    app.MessageField.Value = '>> Mn(III) ion example selected';
                 otherwise % 'Fe(III) ion'
                     app.SamplePhysicalStateDropDown.Value = 'solid';
                     app.SysSEditField.Value = '2.5';
@@ -1024,7 +1034,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'matrix'; 
                     app.OptGridSizeEditField.Value = 30;
-                    app.MessageField.Value = 'Fe(III) ion example selected';
+                    app.MessageField.Value = '>> Fe(III) ion example selected';
             end
         end
 
@@ -1127,6 +1137,32 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             end
 
         end
+
+        % Button pushed function: FieldButton
+        function FieldButtonPushed(app, event)
+            % converts current g-value to a field position
+            app.MessageField.FontColor = [0.5 0.5 0.5];
+            try
+                B = app.planck_const*app.ExpmwFreqEditField.Value*1e8/app.Bohr_magn/app.gfactorEditField.Value; % in mT
+                app.FieldEditField.Value = round(B,1);
+                app.MessageField.Value = ['>> B = ' num2str(B)];
+            catch ME
+                app.MessageField.Value = ['>> ' ME.message];
+            end
+        end
+
+        % Button pushed function: gfactorButton
+        function gfactorButtonPushed(app, event)
+            % converts current field position to a g-value
+            app.MessageField.FontColor = [0.5 0.5 0.5];
+            try
+                geff = app.planck_const*app.ExpmwFreqEditField.Value*1e8/app.Bohr_magn/app.FieldEditField.Value; 
+                app.gfactorEditField.Value = geff;
+                app.MessageField.Value = ['>> g-factor = ' num2str(geff)];
+            catch ME
+                app.MessageField.Value = ['>> ' ME.message];
+            end
+        end
     end
 
     % Component initialization
@@ -1190,6 +1226,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             % Create EnergyleveldiagramPanel
             app.EnergyleveldiagramPanel = uipanel(app.GridLayoutMain);
+            app.EnergyleveldiagramPanel.BorderColor = [0.651 0.651 0.651];
             app.EnergyleveldiagramPanel.ForegroundColor = [0.502 0.502 0.502];
             app.EnergyleveldiagramPanel.Title = 'Energy level diagram';
             app.EnergyleveldiagramPanel.BackgroundColor = [1 1 1];
@@ -1201,6 +1238,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             app.GridLayoutLevels = uigridlayout(app.EnergyleveldiagramPanel);
             app.GridLayoutLevels.ColumnWidth = {'1x'};
             app.GridLayoutLevels.RowHeight = {'1x'};
+            app.GridLayoutLevels.BackgroundColor = [0.9412 0.9412 0.9412];
 
             % Create UIAxesLevels
             app.UIAxesLevels = uiaxes(app.GridLayoutLevels);
@@ -1221,6 +1259,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             % Create AbsorptionspectrumPanel
             app.AbsorptionspectrumPanel = uipanel(app.GridLayoutRightCol);
+            app.AbsorptionspectrumPanel.BorderColor = [0.651 0.651 0.651];
             app.AbsorptionspectrumPanel.ForegroundColor = [0.502 0.502 0.502];
             app.AbsorptionspectrumPanel.Title = 'Absorption spectrum';
             app.AbsorptionspectrumPanel.BackgroundColor = [1 1 1];
@@ -1243,6 +1282,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             % Create CWspectrumPanel
             app.CWspectrumPanel = uipanel(app.GridLayoutRightCol);
+            app.CWspectrumPanel.BorderColor = [0.651 0.651 0.651];
             app.CWspectrumPanel.ForegroundColor = [0.502 0.502 0.502];
             app.CWspectrumPanel.Title = 'CW spectrum';
             app.CWspectrumPanel.BackgroundColor = [1 1 1];
@@ -1280,6 +1320,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             % Create ComputationalParametersPanel
             app.ComputationalParametersPanel = uipanel(app.GridLayoutLeftPanel);
+            app.ComputationalParametersPanel.BorderColor = [0.651 0.651 0.651];
             app.ComputationalParametersPanel.ForegroundColor = [0.502 0.502 0.502];
             app.ComputationalParametersPanel.Title = 'Computational Parameters';
             app.ComputationalParametersPanel.BackgroundColor = [1 1 1];
@@ -1341,6 +1382,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             % Create SpinSystemPanel
             app.SpinSystemPanel = uipanel(app.GridLayoutLeftPanel);
+            app.SpinSystemPanel.BorderColor = [0.651 0.651 0.651];
             app.SpinSystemPanel.ForegroundColor = [0.502 0.502 0.502];
             app.SpinSystemPanel.Title = 'Spin System';
             app.SpinSystemPanel.BackgroundColor = [0.851 0.949 1];
@@ -1577,6 +1619,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             % Create ExperimentalParametersPanel
             app.ExperimentalParametersPanel = uipanel(app.GridLayoutLeftPanel);
+            app.ExperimentalParametersPanel.BorderColor = [0.651 0.651 0.651];
             app.ExperimentalParametersPanel.ForegroundColor = [0.502 0.502 0.502];
             app.ExperimentalParametersPanel.Title = 'Experimental Parameters';
             app.ExperimentalParametersPanel.BackgroundColor = [0.949 1 0.851];
@@ -1704,6 +1747,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             % Create ControlPanel
             app.ControlPanel = uipanel(app.GridLayoutLeftPanel);
+            app.ControlPanel.BorderColor = [0.651 0.651 0.651];
             app.ControlPanel.ForegroundColor = [0.502 0.502 0.502];
             app.ControlPanel.Title = 'Control Panel';
             app.ControlPanel.BackgroundColor = [1 1 1];
@@ -1802,33 +1846,9 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             app.ClearButton.Layout.Column = 3;
             app.ClearButton.Text = 'Clear';
 
-            % Create SamplePhysicalStatePanel
-            app.SamplePhysicalStatePanel = uipanel(app.GridLayoutLeftPanel);
-            app.SamplePhysicalStatePanel.ForegroundColor = [0.502 0.502 0.502];
-            app.SamplePhysicalStatePanel.Title = 'Sample Physical State';
-            app.SamplePhysicalStatePanel.BackgroundColor = [1 0.902 0.8];
-            app.SamplePhysicalStatePanel.Layout.Row = 1;
-            app.SamplePhysicalStatePanel.Layout.Column = 1;
-            app.SamplePhysicalStatePanel.FontWeight = 'bold';
-
-            % Create GridLayout14
-            app.GridLayout14 = uigridlayout(app.SamplePhysicalStatePanel);
-            app.GridLayout14.ColumnWidth = {'1x', '1x', '1x'};
-            app.GridLayout14.RowHeight = {'1x'};
-            app.GridLayout14.Padding = [10 4 10 4];
-            app.GridLayout14.BackgroundColor = [1 0.902 0.8];
-
-            % Create SamplePhysicalStateDropDown
-            app.SamplePhysicalStateDropDown = uidropdown(app.GridLayout14);
-            app.SamplePhysicalStateDropDown.Items = {'liquid', 'solid'};
-            app.SamplePhysicalStateDropDown.ValueChangedFcn = createCallbackFcn(app, @SamplePhysicalStateDropDownValueChanged, true);
-            app.SamplePhysicalStateDropDown.BackgroundColor = [0.902 0.8 0.702];
-            app.SamplePhysicalStateDropDown.Layout.Row = 1;
-            app.SamplePhysicalStateDropDown.Layout.Column = 1;
-            app.SamplePhysicalStateDropDown.Value = 'liquid';
-
             % Create MessagePanel
             app.MessagePanel = uipanel(app.GridLayoutLeftPanel);
+            app.MessagePanel.BorderColor = [0.651 0.651 0.651];
             app.MessagePanel.Layout.Row = 7;
             app.MessagePanel.Layout.Column = 1;
 
@@ -1836,6 +1856,10 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             app.GridLayout15 = uigridlayout(app.MessagePanel);
             app.GridLayout15.ColumnWidth = {'1x'};
             app.GridLayout15.RowHeight = {'1x'};
+            app.GridLayout15.ColumnSpacing = 0;
+            app.GridLayout15.RowSpacing = 0;
+            app.GridLayout15.Padding = [0 0 0 0];
+            app.GridLayout15.BackgroundColor = [0.651 0.651 0.651];
 
             % Create MessageField
             app.MessageField = uieditfield(app.GridLayout15, 'text');
@@ -1856,6 +1880,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             % Create ExamplesPanel
             app.ExamplesPanel = uipanel(app.GridLayout7);
+            app.ExamplesPanel.BorderColor = [0.651 0.651 0.651];
             app.ExamplesPanel.ForegroundColor = [0.502 0.502 0.502];
             app.ExamplesPanel.Title = 'Examples';
             app.ExamplesPanel.BackgroundColor = [1 1 1];
@@ -1879,6 +1904,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             % Create FrequencyBandPanel
             app.FrequencyBandPanel = uipanel(app.GridLayout7);
+            app.FrequencyBandPanel.BorderColor = [0.651 0.651 0.651];
             app.FrequencyBandPanel.ForegroundColor = [0.502 0.502 0.502];
             app.FrequencyBandPanel.Title = 'Frequency Band';
             app.FrequencyBandPanel.BackgroundColor = [1 1 1];
@@ -1899,6 +1925,110 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             app.FrequencyBandDropDown.Layout.Row = 1;
             app.FrequencyBandDropDown.Layout.Column = 1;
             app.FrequencyBandDropDown.Value = 'S-band';
+
+            % Create GridLayout16
+            app.GridLayout16 = uigridlayout(app.GridLayoutLeftPanel);
+            app.GridLayout16.ColumnWidth = {'1x', '2x'};
+            app.GridLayout16.RowHeight = {'1x'};
+            app.GridLayout16.RowSpacing = 0;
+            app.GridLayout16.Padding = [0 0 0 0];
+            app.GridLayout16.Layout.Row = 1;
+            app.GridLayout16.Layout.Column = 1;
+            app.GridLayout16.BackgroundColor = [0.651 0.651 0.651];
+
+            % Create SamplePhysicalStatePanel
+            app.SamplePhysicalStatePanel = uipanel(app.GridLayout16);
+            app.SamplePhysicalStatePanel.BorderColor = [0.651 0.651 0.651];
+            app.SamplePhysicalStatePanel.ForegroundColor = [0.502 0.502 0.502];
+            app.SamplePhysicalStatePanel.Title = 'Sample Physical State';
+            app.SamplePhysicalStatePanel.BackgroundColor = [1 0.902 0.8];
+            app.SamplePhysicalStatePanel.Layout.Row = 1;
+            app.SamplePhysicalStatePanel.Layout.Column = 1;
+            app.SamplePhysicalStatePanel.FontWeight = 'bold';
+
+            % Create GridLayout14
+            app.GridLayout14 = uigridlayout(app.SamplePhysicalStatePanel);
+            app.GridLayout14.ColumnWidth = {'1x'};
+            app.GridLayout14.RowHeight = {'1x'};
+            app.GridLayout14.Padding = [10 4 10 4];
+            app.GridLayout14.BackgroundColor = [1 0.902 0.8];
+
+            % Create SamplePhysicalStateDropDown
+            app.SamplePhysicalStateDropDown = uidropdown(app.GridLayout14);
+            app.SamplePhysicalStateDropDown.Items = {'liquid', 'solid'};
+            app.SamplePhysicalStateDropDown.ValueChangedFcn = createCallbackFcn(app, @SamplePhysicalStateDropDownValueChanged, true);
+            app.SamplePhysicalStateDropDown.BackgroundColor = [0.902 0.8 0.702];
+            app.SamplePhysicalStateDropDown.Layout.Row = 1;
+            app.SamplePhysicalStateDropDown.Layout.Column = 1;
+            app.SamplePhysicalStateDropDown.Value = 'liquid';
+
+            % Create FieldtogfactorConverterPanel
+            app.FieldtogfactorConverterPanel = uipanel(app.GridLayout16);
+            app.FieldtogfactorConverterPanel.ForegroundColor = [0.502 0.502 0.502];
+            app.FieldtogfactorConverterPanel.Title = 'Field to g-factor Converter';
+            app.FieldtogfactorConverterPanel.BackgroundColor = [1 0.902 0.8];
+            app.FieldtogfactorConverterPanel.Layout.Row = 1;
+            app.FieldtogfactorConverterPanel.Layout.Column = 2;
+            app.FieldtogfactorConverterPanel.FontWeight = 'bold';
+
+            % Create GridLayout14_2
+            app.GridLayout14_2 = uigridlayout(app.FieldtogfactorConverterPanel);
+            app.GridLayout14_2.ColumnWidth = {'1.5x', '2.2x', '0.6x', '0.2x', '1.5x', '2.2x'};
+            app.GridLayout14_2.RowHeight = {'1x'};
+            app.GridLayout14_2.Padding = [10 4 10 4];
+            app.GridLayout14_2.BackgroundColor = [1 0.902 0.8];
+
+            % Create EditFieldLabel
+            app.EditFieldLabel = uilabel(app.GridLayout14_2);
+            app.EditFieldLabel.HorizontalAlignment = 'right';
+            app.EditFieldLabel.Layout.Row = 1;
+            app.EditFieldLabel.Layout.Column = 1;
+            app.EditFieldLabel.Text = '';
+
+            % Create FieldEditField
+            app.FieldEditField = uieditfield(app.GridLayout14_2, 'numeric');
+            app.FieldEditField.ValueDisplayFormat = '%.1f';
+            app.FieldEditField.HorizontalAlignment = 'center';
+            app.FieldEditField.Layout.Row = 1;
+            app.FieldEditField.Layout.Column = 2;
+            app.FieldEditField.Value = 330;
+
+            % Create gfactorEditFieldLabel
+            app.gfactorEditFieldLabel = uilabel(app.GridLayout14_2);
+            app.gfactorEditFieldLabel.HorizontalAlignment = 'right';
+            app.gfactorEditFieldLabel.Layout.Row = 1;
+            app.gfactorEditFieldLabel.Layout.Column = 5;
+            app.gfactorEditFieldLabel.Text = 'g-factor';
+
+            % Create gfactorEditField
+            app.gfactorEditField = uieditfield(app.GridLayout14_2, 'numeric');
+            app.gfactorEditField.ValueDisplayFormat = '%.6f';
+            app.gfactorEditField.HorizontalAlignment = 'center';
+            app.gfactorEditField.Layout.Row = 1;
+            app.gfactorEditField.Layout.Column = 6;
+            app.gfactorEditField.Value = 2;
+
+            % Create FieldButton
+            app.FieldButton = uibutton(app.GridLayout14_2, 'push');
+            app.FieldButton.ButtonPushedFcn = createCallbackFcn(app, @FieldButtonPushed, true);
+            app.FieldButton.BackgroundColor = [0.902 0.8 0.702];
+            app.FieldButton.Layout.Row = 1;
+            app.FieldButton.Layout.Column = 1;
+            app.FieldButton.Text = 'Field';
+
+            % Create gfactorButton
+            app.gfactorButton = uibutton(app.GridLayout14_2, 'push');
+            app.gfactorButton.ButtonPushedFcn = createCallbackFcn(app, @gfactorButtonPushed, true);
+            app.gfactorButton.BackgroundColor = [0.902 0.8 0.702];
+            app.gfactorButton.Layout.Row = 1;
+            app.gfactorButton.Layout.Column = 5;
+            app.gfactorButton.Text = 'g-factor';
+
+            % Create mTLabel
+            app.mTLabel = uilabel(app.GridLayout14_2);
+            app.mTLabel.Layout.Row = 1;
+            app.mTLabel.Layout.Column = 3;
+            app.mTLabel.Text = 'mT';
 
             % Show the figure after all components are created
             app.EPRSimulatorUIFigure.Visible = 'on';

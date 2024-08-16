@@ -8,6 +8,8 @@ test2.m
 */*.docx
 *.prj
 *.svg
+test_data/*KA*
+EPRSimulator*
 
 # Windows default autosave extension
 *.asv
