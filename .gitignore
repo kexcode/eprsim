@@ -6,6 +6,7 @@ test.m
 test2.m
 *_resources/*
 */*.docx
+*.tmp
 *.prj
 *.svg
 test_data/*KA*

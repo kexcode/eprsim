@@ -227,17 +227,6 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
         
         % Plot elevels if can be calculated, otherwise clear the plot
         function plot_elevels(app)
-                
-            % validation: 
-            %   if 'Sys.n' exists -> check if it is a scalar:
-            %                       yes - proceed;
-            %                       no  - clear the plot and return
-            % if (isfield(app.Sys, 'n') && ~isscalar(app.Sys.n))
-            %     app.MessageField.Value = "Error: only one kind of equivalent nuclei supported";
-            %     cla(app.UIAxesLevels);
-            %     return;
-            % end
-
             % building arguments for levels()
 
             % Field
@@ -251,25 +240,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             end
 
             Param = app.Exp;
-            % Param.SampleFrame = app.Exp.SampleFrame; % questionable -> check on limit cases !!!
-             
-            % old version of ELD_Sys compilation
-            % ELD_Sys = app.Sys;
-              
             ELD_Sys = parse_nucs(app);
-%---------------equivalent nuclei case------------------------------------ 
-            % % building the new spin system for equivalent nuclei by
-            % % adding
-            % if (isfield(app.Sys, 'n') && app.Sys.n > 1)
-            %     for i = 1:app.Sys.n - 1
-            %         ELD_Sys.Nucs = strcat(ELD_Sys.Nucs,',',app.Sys.Nucs);
-            %         ELD_Sys.A = [ELD_Sys.A; app.Sys.A];
-            %         if (isfield(app.Sys, 'Q') && app.Sys.Q ~= 0)
-            %             ELD_Sys.Q = [ELD_Sys.Q; app.Sys.Q];    
-            %         end
-            %     end
-            %     ELD_Sys = rmfield(ELD_Sys,'n'); % need to remove the field 'n' from this spin system
-            % end
 
 %---------------calculating E levels and resonant positions----------------                 
             try
@@ -277,9 +248,9 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                 [Pos, ampl, ~, trans] = resfields(ELD_Sys, Param);
             catch ME
                 app.MessageField.Value = ['>> ' ME.message];
-                cla(app.UIAxesLevels);
-                % app.StartButton.Value = false;
-                % app.StartButton.Text = "Start";
+                clear_plots(app);
+                app.StartButton.Value = false;
+                app.StartButton.Text = 'Start';
                 return;
             end
 
@@ -346,8 +317,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     if isfield(app.Sys, 'n')
                         app.MessageField.FontColor = 'r';
                         app.MessageField.Value = '>> Error: equivalent nuclei are not supported in pepper';
-                        cla(app.UIAxesCW);
-                        cla(app.UIAxesAbsorption);
+                        clear_plots(app);
                         app.StartButton.Value = false;
                         app.StartButton.Text = 'Start';
                         return;
@@ -375,6 +345,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                             %     [x, spec] = garlic(ELD_Sys, app.Exp, app.Opt);
                             % end
                             app.MessageField.Value = ['>> ' ME.message];
+                            clear_plots(app);
                             app.StartButton.Value = false;
                             app.StartButton.Text = 'Start';
                             return;
@@ -384,6 +355,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                 
                 otherwise
                     app.MessageField.Value = ['>> ' ME.message];
+                    clear_plots(app);
                     app.StartButton.Value = false;
                     app.StartButton.Text = 'Start';
                     return;
@@ -449,7 +421,17 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     return;
             end
             
-            spec = spec/max(spec);
+            if isequal(spec,zeros(size(spec)))
+                app.MessageField.FontColor = 'r';
+                app.MessageField.Value = '>> Warning: No transitions in the given field range';
+                clear_plots(app);
+                app.StartButton.Value = false;
+                app.StartButton.Text = 'Start';
+                return;
+            else
+                spec = spec/max(spec);
+            end
+
             
             % check if need to overlap spectra
             if (strcmp(app.OverlayresultsSwitch.Value,'On'))
@@ -461,7 +443,9 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             end
 
             xlim(app.UIAxesCW, app.Exp.Range);
-            ylim(app.UIAxesCW, [min(spec) max(spec)]*1.3);
+            if ~isequal(min(spec),max(spec))
+                ylim(app.UIAxesCW, [min(spec) max(spec)]*1.3);
+            end
                    
             % if data exists - add to the plot
             if (isfield(app.Data,'file'))
@@ -559,6 +543,14 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             % 'C') to the first isotope, like '12C'
             IsotopesList = nucdata();
             app.DataBases.ElementsDict = dictionary(IsotopesList.Element, IsotopesList.Protons); % 'C' -> 6 (Protons)
+        end
+        
+        
+        function clear_plots(app)
+            % clear all plots
+            cla(app.UIAxesLevels);
+            cla(app.UIAxesAbsorption);
+            cla(app.UIAxesCW);
         end
     end
     
@@ -837,22 +829,22 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                 case '1 Proton'
                     app.SamplePhysicalStateDropDown.Value = 'liquid';
                     app.SysSEditField.Value = '1/2';
-                    app.SysgEditField.Value = '2.0023';
+                    app.SysgEditField.Value = '2.0029';
                     app.SysNucsEditField.Value = '1H';
                     app.SysnEditField.Value = '';
-                    app.SysAEditField.Value = '20';
+                    app.SysAEditField.Value = '1430';
                     app.SysQEditField.Value = '';
                     app.SysDEditField.Value = '';
-                    app.SyslwEditField.Value = '0.2';
+                    app.SyslwEditField.Value = '1';
                     SysNucsEditFieldValueChanged(app);
                     if (~isfield(app.Data.par, 'MWFQ'))
                         app.FrequencyBandDropDown.Value = 'X-band';
                         app.ExpmwFreqEditField.Value = 9.4;
                     end
                     if (~isfield(app.Data.par, 'Range'))
-                        app.ExpRangeEditField.Value = '[330 340]';
+                        app.ExpRangeEditField.Value = '[200 450]';
                     end
-                    app.ExpnPointsEditField.Value = 501;
+                    app.ExpnPointsEditField.Value = 5001;
                     app.ExpTemperatureEditField.Value = '';
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'perturb2'; 
@@ -862,22 +854,22 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                 case '2 Protons'
                     app.SamplePhysicalStateDropDown.Value = 'liquid';
                     app.SysSEditField.Value = '1/2';
-                    app.SysgEditField.Value = '2.0023';
+                    app.SysgEditField.Value = '2.0029';
                     app.SysNucsEditField.Value = '1H';
                     app.SysnEditField.Value = '2';
-                    app.SysAEditField.Value = '20';
+                    app.SysAEditField.Value = '1430';
                     app.SysQEditField.Value = '';
                     app.SysDEditField.Value = '';
-                    app.SyslwEditField.Value = '0.2';
+                    app.SyslwEditField.Value = '1';
                     SysNucsEditFieldValueChanged(app);
                     if (~isfield(app.Data.par, 'MWFQ'))
                         app.FrequencyBandDropDown.Value = 'X-band';
                         app.ExpmwFreqEditField.Value = 9.4;
                     end
                     if (~isfield(app.Data.par, 'Range'))
-                        app.ExpRangeEditField.Value = '[330 340]';
+                        app.ExpRangeEditField.Value = '[200 450]';
                     end
-                    app.ExpnPointsEditField.Value = 501;
+                    app.ExpnPointsEditField.Value = 5001;
                     app.ExpTemperatureEditField.Value = '';
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
                     app.OptMethodDropDown.Value = 'exact'; 
