@@ -128,7 +128,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
         Sys = struct('S', 0.5, 'g', 2.0023, 'Nucs', '','lw', 0.1);          % Spin System parameters
         Exp = struct('Temperature', [], 'SampleFrame', []);                 % Experimental parameters
         Opt = struct('Method', 'exact', 'GridSize', 23);                    % Optimization parameters
-        Data = struct('x',[],'spec',[],'par',[]);                           % Loaded experimental data (optional)
+        Data = struct('x',[],'spec',[],'par',[]);                  % Loaded experimental data (optional)
         
         ColorScheme = struct('Map', lines(10), 'CurrentColorIndex', 1);
         version = '3.3'; % version 2024
@@ -317,7 +317,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     if isfield(app.Sys, 'n')
                         app.MessageField.FontColor = 'r';
                         app.MessageField.Value = '>> Error: equivalent nuclei are not supported in pepper';
-                        clear_plots(app);
+                        % app.UIAxesAbsorption.Visible = "off";% cla(app.UIAxesAbsorption);
                         app.StartButton.Value = false;
                         app.StartButton.Text = 'Start';
                         return;
@@ -326,6 +326,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                         [x, spec] = pepper(app.Sys, app.Exp, app.Opt);
                     catch ME
                         if (~isempty(ME.message))
+                            app.MessageField.FontColor = 'r';
                             app.MessageField.Value = ['>> ' ME.message];
                             app.StartButton.Value = false;
                             app.StartButton.Text = 'Start';
@@ -333,7 +334,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                         end
                     end
                 
-                    spec = spec/max(spec)*0.9 + 0.05;
+                    spec = spec/max(spec);
                 
                 case 'liquid'
                     app.Exp.Harmonic = 0;
@@ -341,11 +342,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                         [x, spec] = garlic(app.Sys, app.Exp, app.Opt);
                     catch ME
                         if (~isempty(ME.message))
-                            % if (contains(ME.message, 'equivalent nuclei'))
-                            %     [x, spec] = garlic(ELD_Sys, app.Exp, app.Opt);
-                            % end
                             app.MessageField.Value = ['>> ' ME.message];
-                            clear_plots(app);
+                            % cla(app.UIAxesAbsorption);
                             app.StartButton.Value = false;
                             app.StartButton.Text = 'Start';
                             return;
@@ -354,8 +352,6 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     spec = spec/max(spec);
                 
                 otherwise
-                    app.MessageField.Value = ['>> ' ME.message];
-                    clear_plots(app);
                     app.StartButton.Value = false;
                     app.StartButton.Text = 'Start';
                     return;
@@ -383,6 +379,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     else
                         plot(app.UIAxesAbsorption, app.Data.x, real(app.Data.spec),'k',app.Data.x, imag(app.Data.spec),'m')    
                     end
+                    hold(app.UIAxesAbsorption, 'off');
                 end
             end
                 
@@ -444,12 +441,17 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
 
             xlim(app.UIAxesCW, app.Exp.Range);
             if ~isequal(min(spec),max(spec))
-                ylim(app.UIAxesCW, [min(spec) max(spec)]*1.3);
+                ylim(app.UIAxesCW, [min(spec) max(spec)]*1.2);
             end
                    
             % if data exists - add to the plot
             if (isfield(app.Data,'file'))
-                if (isfield(app.Data.par, 'EXPT') && strcmp(app.Data.par.EXPT,'CW'))
+                if isfield(app.Data.par, 'EXPT')
+                    if strcmp(app.Data.par.EXPT,'CW')
+                        hold(app.UIAxesCW, 'on');
+                        plot(app.UIAxesCW, app.Data.x, app.Data.spec,'k');
+                    end
+                else % there is no 'EXPT'
                     hold(app.UIAxesCW, 'on');
                     plot(app.UIAxesCW, app.Data.x, app.Data.spec,'k');
                 end
@@ -602,58 +604,64 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                 [app.Data.x, app.Data.spec, app.Data.par] = eprload(strcat(app.Data.path,app.Data.file)); % loading selected data file | only .dsc are supported for now
                 app.MessageField.FontColor = 'k';            
                 app.MessageField.Value = "Loading...";
-                
-                % is pulse or cw experiment?
-                if (isfield(app.Data.par, 'EXPT'))
-                    if (strcmp(app.Data.par.EXPT,'PLS'))
-                        app.Data.axh = app.UIAxesAbsorption; % axes handle << Absorption spectrum
-                    else
-                        app.Data.axh = app.UIAxesCW;         % axes handle << CW spectrum
-                    end
-                else
-                    app.Data.axh = app.UIAxesCW;         % axes handle << CW spectrum
-                end
-                
+                clear_plots(app);
+                % % is pulse or cw experiment?
+                % if (isfield(app.Data.par, 'EXPT'))
+                %     if (strcmp(app.Data.par.EXPT,'PLS'))
+                %         app.Data.axh = app.UIAxesAbsorption; % axes handle << Absorption spectrum
+                %     else
+                %         app.Data.axh = app.UIAxesCW;         % axes handle << CW spectrum
+                %     end
+                % else
+                %     app.Data.axh = app.UIAxesCW;         % axes handle << CW spectrum
+                % end
+
                 % unit conversion and baseline correction
                 app.Data.x = app.Data.x/10; % converting G into mT
                 app.Data.spec = basecorr(app.Data.spec, 1, 1);
                 app.Data.spec = app.Data.spec/max(app.Data.spec); % scaling ordinate to maxval == 1
-                
+                % spec = app.Data.spec
+                % param = app.Data.par
+
+
                 if (isfield(app.Data.par, 'MWFQ'))
                     % change band selector depending on mwFreq
                     freq = app.Data.par.MWFQ/1e9;
                     if (freq > 2 && freq < 4)
-                        app.FrequencyBandDropDown.Value = 'S-band'
+                        app.FrequencyBandDropDown.Value = 'S-band';
                     elseif (freq > 30 && freq < 50)
                         app.FrequencyBandDropDown.Value = 'Q-band';
                     elseif (freq > 75 && freq < 110)
                         app.FrequencyBandDropDown.Value = 'W-band';
-                    elseif (freq > 230 && freq < 250)
+                    elseif (freq > 230)
                         app.FrequencyBandDropDown.Value = '240 GHz';
                     else
                         app.FrequencyBandDropDown.Value = 'X-band';
                     end
-                    app.ExpmwFreqEditField.Value = app.Data.par.MWFQ/1e9; % loading frequency if exists    
+                    % loading frequency if exists
+                    app.ExpmwFreqEditField.Value = freq;
+                    clear freq;  
                 end
-                app.Data.par.Range = [app.Data.par.XMIN (app.Data.par.XMIN+app.Data.par.XWID)]/10; % loading field range
-                app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']'); 
+                
+                app.Data.par.Range = [app.Data.x(1) app.Data.x(length(app.Data.x))]; % loading field range
+                app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
                 
                 % is pulse or cw experiment?
                 if (isfield(app.Data.par, 'EXPT'))
                     if (strcmp(app.Data.par.EXPT,'PLS'))
                         if (isreal(app.Data.spec)) % check if not complex
-                            plot(app.Data.axh, app.Data.x, app.Data.spec,'k')
+                            plot(app.UIAxesAbsorption, app.Data.x, app.Data.spec,'k')
                         else
-                            plot(app.Data.axh, app.Data.x, real(app.Data.spec),'k',app.Data.x, imag(app.Data.spec),'-k')
+                            plot(app.UIAxesAbsorption, app.Data.x, real(app.Data.spec),'k',app.Data.x, imag(app.Data.spec),'-k')
                         end
-
-                        % plot formatting
-                        
                         app.UIAxesAbsorption.YLim = [-0.05 1.1];
-                    else % otherwise / not pulse
+                    else
                         plot(app.UIAxesCW, app.Data.x, app.Data.spec,'k')
-                        app.UIAxesCW.YLim = 1.2 * [min(real(app.Data.spec)) max(real(app.Data.spec))];
+                        app.UIAxesCW.YLim = 1.2 * [min(app.Data.spec) max(app.Data.spec)];
                     end
+                else % otherwise / doesn't have the tag 'EXPT' like the Fe example data
+                    plot(app.UIAxesCW, app.Data.x, app.Data.spec,'k')
+                    app.UIAxesCW.YLim = 1.2 * [min(app.Data.spec) max(app.Data.spec)];
                 end
                 app.UIAxesAbsorption.XLim = app.Data.par.Range;
                 app.UIAxesCW.XLim = app.Data.par.Range;
@@ -663,10 +671,13 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                 
                 % lamp on
                 app.DataisloadedLamp.Color = 'g';
+                
                 % status message
                 app.MessageField.Value = ">> Loading completed";
+                
             catch ME
                 app.MessageField.Value = ['>> ' ME.message];
+
             end
             app.EPRSimulatorUIFigure.Visible = 'off';
             app.EPRSimulatorUIFigure.Visible = 'on';
@@ -819,6 +830,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     end
                     if (~isfield(app.Data.par, 'Range'))
                         app.ExpRangeEditField.Value = '[330 340]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
                     end
                     app.ExpnPointsEditField.Value = 501;
                     app.ExpTemperatureEditField.Value = '';
@@ -843,6 +856,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     end
                     if (~isfield(app.Data.par, 'Range'))
                         app.ExpRangeEditField.Value = '[200 450]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
                     end
                     app.ExpnPointsEditField.Value = 5001;
                     app.ExpTemperatureEditField.Value = '';
@@ -868,6 +883,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     end
                     if (~isfield(app.Data.par, 'Range'))
                         app.ExpRangeEditField.Value = '[200 450]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
                     end
                     app.ExpnPointsEditField.Value = 5001;
                     app.ExpTemperatureEditField.Value = '';
@@ -892,6 +909,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     end
                     if (~isfield(app.Data.par, 'Range'))
                         app.ExpRangeEditField.Value = '[328 342]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
                     end
                     app.ExpnPointsEditField.Value = 501;
                     app.ExpTemperatureEditField.Value = '';
@@ -910,9 +929,15 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.SysDEditField.Value = '';
                     app.SyslwEditField.Value = '0.2'; %mT
                     SysNucsEditFieldValueChanged(app);
-                    app.FrequencyBandDropDown.Value = 'X-band';
-                    app.ExpmwFreqEditField.Value = 9.4;
-                    app.ExpRangeEditField.Value = '[325 345]';
+                    if (~isfield(app.Data.par, 'MWFQ'))
+                        app.FrequencyBandDropDown.Value = 'X-band';
+                        app.ExpmwFreqEditField.Value = 9.4;
+                    end
+                    if (~isfield(app.Data.par, 'Range'))
+                        app.ExpRangeEditField.Value = '[325 345]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
+                    end
                     app.ExpnPointsEditField.Value = 501;
                     app.ExpTemperatureEditField.Value = '';
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
@@ -930,9 +955,15 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.SysDEditField.Value = '[0.15 0.025]';
                     app.SyslwEditField.Value = '10'; %mT
                     SysNucsEditFieldValueChanged(app);
-                    app.FrequencyBandDropDown.Value = 'X-band';
-                    app.ExpmwFreqEditField.Value = 9.4;
-                    app.ExpRangeEditField.Value = '[0 600]';
+                    if (~isfield(app.Data.par, 'MWFQ'))
+                        app.FrequencyBandDropDown.Value = 'X-band';
+                        app.ExpmwFreqEditField.Value = 9.4;
+                    end
+                    if (~isfield(app.Data.par, 'Range'))
+                        app.ExpRangeEditField.Value = '[0 600]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
+                    end
                     app.ExpnPointsEditField.Value = 2501;
                     app.ExpTemperatureEditField.Value = '';
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
@@ -950,9 +981,15 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.SysDEditField.Value = '[1.369 0.093]';
                     app.SyslwEditField.Value = '30'; %mT
                     SysNucsEditFieldValueChanged(app);
-                    app.FrequencyBandDropDown.Value = 'W-band';
-                    app.ExpmwFreqEditField.Value = 94;
-                    app.ExpRangeEditField.Value = '[0 6000]';
+                    if (~isfield(app.Data.par, 'MWFQ'))
+                        app.FrequencyBandDropDown.Value = 'W-band';
+                        app.ExpmwFreqEditField.Value = 94;
+                    end
+                    if (~isfield(app.Data.par, 'Range'))
+                        app.ExpRangeEditField.Value = '[0 6000]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
+                    end
                     app.ExpnPointsEditField.Value = 5001;
                     app.ExpTemperatureEditField.Value = '15';
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
@@ -970,9 +1007,15 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     app.SysDEditField.Value = '[0.4089 0.093]';
                     app.SyslwEditField.Value = '10'; %mT
                     SysNucsEditFieldValueChanged(app);
-                    app.FrequencyBandDropDown.Value = 'X-band';
-                    app.ExpmwFreqEditField.Value = 9.4;
-                    app.ExpRangeEditField.Value = '[0 1400]';
+                    if (~isfield(app.Data.par, 'MWFQ'))
+                        app.FrequencyBandDropDown.Value = 'X-band';
+                        app.ExpmwFreqEditField.Value = 9.4;
+                    end
+                    if (~isfield(app.Data.par, 'Range'))
+                        app.ExpRangeEditField.Value = '[0 1400]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
+                    end
                     app.ExpnPointsEditField.Value = 5001;
                     app.ExpTemperatureEditField.Value = '';
                     app.ExpSampleFrameEditField.Value = '[0 0 0]';
@@ -996,6 +1039,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     end
                     if (~isfield(app.Data.par, 'Range'))
                         app.ExpRangeEditField.Value = '[0 12000]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
                     end
                     app.ExpnPointsEditField.Value = 2501;
                     app.ExpTemperatureEditField.Value = '5';
@@ -1020,6 +1065,8 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
                     end
                     if (~isfield(app.Data.par, 'Range'))
                         app.ExpRangeEditField.Value = '[0 400]';
+                    else
+                        app.ExpRangeEditField.Value = strcat('[', num2str(app.Data.par.Range), ']');
                     end
                     app.ExpnPointsEditField.Value = 2501;
                     app.ExpTemperatureEditField.Value = '5';
@@ -1091,7 +1138,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             cla(app.UIAxesLevels);
             cla(app.UIAxesAbsorption);
             cla(app.UIAxesCW);
-            app.MessageField.Value = 'The data is cleared from memory';
+            app.MessageField.Value = 'The data is cleared from the workspace';
         end
 
         % Menu selected function: EasyspinMenu
@@ -1916,7 +1963,7 @@ classdef eprsimulator_2024_exported < matlab.apps.AppBase
             app.FrequencyBandDropDown.ValueChangedFcn = createCallbackFcn(app, @FrequencyBandDropDownValueChanged, true);
             app.FrequencyBandDropDown.Layout.Row = 1;
             app.FrequencyBandDropDown.Layout.Column = 1;
-            app.FrequencyBandDropDown.Value = 'S-band';
+            app.FrequencyBandDropDown.Value = 'X-band';
 
             % Create GridLayout16
             app.GridLayout16 = uigridlayout(app.GridLayoutLeftPanel);
