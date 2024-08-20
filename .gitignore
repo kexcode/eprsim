@@ -12,6 +12,7 @@ test2.m
 test_data/*KA*
 EPRSimulator*
 *Tutorial*
+distr/*
 
 # Windows default autosave extension
 *.asv
