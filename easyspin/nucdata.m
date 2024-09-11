@@ -21,7 +21,9 @@
 
 function varargout = nucdata(Isotopes)
 
-if nargout==0, help(mfilename); return; end
+if nargout==0 
+    return; 
+end
 
 %--------------------------------------------------------------
 persistent Elements IsotopeList

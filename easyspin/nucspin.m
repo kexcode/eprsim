@@ -13,8 +13,10 @@
 
 function I = nucspin(varargin)
 
-if nargin==0, help(mfilename); return; end
-
-I = nucdata(varargin);
+    if nargin==0
+        return; 
+    end
+    
+    I = nucdata(varargin);
 
 end
